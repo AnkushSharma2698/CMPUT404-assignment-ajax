@@ -103,8 +103,7 @@ def clear():
     # Clear the world
     myWorld.clear()
     # Jsonify the world before return
-    return jsonify(myWorld.world()) 
-     
+    return jsonify(success=True) 
 
 if __name__ == "__main__":
     app.run()
