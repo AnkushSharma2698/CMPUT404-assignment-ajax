@@ -54,6 +54,29 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     xhr.send(objects);
 }
 
+// I am using this method instead of the given on since I enjoy the syntax of this method much better. No effect on usage.
+function sendJSONFetchAPI(url, objects, callback) {
+    // I wanted to test out the fetch api with this and see if it would work
+    var request = new Request(url, {method: "POST", body: objects});
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    fetch(request)
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error("Something went wrong");
+            }
+        })
+        .then(json => {
+            callback(json);
+        })
+        .catch(e => {
+            alert("Error: " + e.name);
+        })
+}
+
 
 world = {};
 
@@ -140,7 +163,7 @@ function getPosition(e) {
 function addEntity(entity, data) {
     world[entity] = data
     drawNextFrame(); // (but should we?)
-    sendJSONXMLHTTPRequest(`/entity/${entity}`, JSON.stringify(data), (response) => {});
+    sendJSONFetchAPI(`/entity/${entity}`, JSON.stringify(data), (response) => {});
 }
 
 var counter = 0;
@@ -263,7 +286,7 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     // Retrieve the world from the web server
-    sendJSONXMLHTTPRequest('/world', null, (response) => {world=response;});
+    sendJSONFetchAPI('/world', null, (response) => {world=response;});
     drawFrame();
 }
 
