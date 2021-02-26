@@ -83,8 +83,12 @@ def update(entity):
     body = flask_post_json()
     for k,v in body.items():
         myWorld.update(entity, k,v)
-    # No errors so return successful response including the entity that was added or updated
-    return myWorld.get(entity) 
+    # Returning the entity itself is only specified for the PUT request in the requirements
+    if flask.request.method == "POST":
+        return {}
+    elif flask.request.method == "PUT":
+        # No errors so return successful response including the entity that was added or updated
+        return myWorld.get(entity)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
