@@ -83,17 +83,19 @@ def update(entity):
     body = flask_post_json()
     for k,v in body.items():
         myWorld.update(entity, k,v)
-    # No errors so return successful response
+    # No errors so return successful response including the entity that was added or updated
     return jsonify(myWorld.get(entity)) 
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
     '''you should probably return the world here'''
+    # Just jsonify and return the world in its current state
     return jsonify(myWorld.world())
 
 @app.route("/entity/<entity>")    
 def get_entity(entity):
     '''This is the GET version of the entity interface, return a representation of the entity'''
+    # Return the entity requested from the world
     json_entity_repr = jsonify(myWorld.get(entity))
     return json_entity_repr
 
@@ -102,7 +104,6 @@ def clear():
     '''Clear the world out!'''
     # Clear the world
     myWorld.clear()
-    # Jsonify the world before return
     return jsonify(success=True) 
 
 if __name__ == "__main__":
